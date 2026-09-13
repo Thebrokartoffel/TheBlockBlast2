@@ -1,7 +1,7 @@
 /* BLOCKSTORM Service Worker
    Cache-First für alle eigenen Dateien, damit das Spiel offline startet.
    WICHTIG: bei jedem Update CACHE hochzählen, sonst bleibt die alte Version hängen. */
-const CACHE = "blockstorm-v5";
+const CACHE = "blockstorm-v6";
 
 const FILES = [
   "./",
