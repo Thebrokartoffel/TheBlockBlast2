@@ -409,7 +409,7 @@
         const breathe = 1 + Math.sin(b.t * 7) * 0.018 * Math.min(1, b.t);
         const sc = ((b.big ? 0.62 : 0.78) + (b.big ? 0.38 : 0.22) * Ease.outBack(inK)) * breathe;
         const tilt = Math.sin(b.t * 5.5) * 0.014 * Math.min(1, b.t * 1.5);
-        const y = L.by + L.size * 0.2 - i * 42;
+        const y = Math.max(L.by + 24, L.by + L.size * 0.2 - i * 42);
         ctx.save();
         ctx.globalAlpha = Math.min(1, b.life * 2.4);
         ctx.translate(L.cx, y); ctx.rotate(tilt); ctx.scale(sc, sc);
