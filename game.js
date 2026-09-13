@@ -110,10 +110,22 @@
     L.by = L.cy - S.N * L.cell / 2;
     L.slotW = W / Math.max(1, S.tray.length);
   }
-  window.addEventListener("resize", resize);
-  window.addEventListener("orientationchange", () => setTimeout(resize, 120));
-  window.addEventListener("load", () => setTimeout(resize, 60));
-  if (window.visualViewport) window.visualViewport.addEventListener("resize", resize);
+  /* Setzt die echte, gerade sichtbare Höhe als CSS-Variable — verhindert,
+     dass Banner/Popups hinter der ein-/ausblendenden Adressleiste landen. */
+  function syncViewportHeight() {
+    const h = window.visualViewport ? window.visualViewport.height : window.innerHeight;
+    document.documentElement.style.setProperty("--vvh", h + "px");
+  }
+  syncViewportHeight();
+  window.addEventListener("resize", () => { syncViewportHeight(); resize(); });
+  window.addEventListener("orientationchange", () => setTimeout(() => { syncViewportHeight(); resize(); }, 120));
+  window.addEventListener("load", () => setTimeout(() => { syncViewportHeight(); resize(); }, 60));
+  window.addEventListener("pageshow", () => setTimeout(() => { syncViewportHeight(); resize(); }, 60));
+  if (window.visualViewport) {
+    window.visualViewport.addEventListener("resize", () => { syncViewportHeight(); resize(); });
+    window.visualViewport.addEventListener("scroll", () => { syncViewportHeight(); resize(); });
+  }
+  setTimeout(() => { syncViewportHeight(); resize(); }, 400);   /* späte Korrektur, falls Events zu früh kommen */
 
   /* -------------------------------------------------------------- Board-Hilfen */
   const idx = (x, y) => y * S.N + x;
@@ -1159,3 +1171,4 @@
     }
   }
 })();
+
